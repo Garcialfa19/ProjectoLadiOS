@@ -1,32 +1,5 @@
 import SwiftUI
 
-struct FeatureRow: View {
-    let icon: String
-    let title: String
-    let subtitle: String
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Image(systemName: icon)
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(width: 38, height: 38)
-                .glassCard(cornerRadius: 14)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.white)
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(Color.white.opacity(0.68))
-            }
-
-            Spacer()
-        }
-    }
-}
-
 struct AuthButton: View {
     let title: String
     let systemImage: String
@@ -40,169 +13,252 @@ struct AuthButton: View {
                 Image(systemName: systemImage)
                     .font(.headline)
                 Text(title)
-                    .fontWeight(.semibold)
+                    .font(.headline.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 18)
+            .padding(.vertical, 16)
             .foregroundStyle(foreground)
             .background(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(background.opacity(0.92))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(Color.white.opacity(0.16), lineWidth: 1)
-                    }
-                    .shadow(color: background.opacity(0.28), radius: 18, x: 0, y: 10)
+                    .fill(background)
             )
         }
+        .buttonStyle(.plain)
     }
 }
 
-struct CapsuleInfo: View {
+struct FilterChip: View {
     let title: String
-    let subtitle: String
+    let isSelected: Bool
+    let action: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        Button(action: action) {
             Text(title)
-                .font(.headline.bold())
-                .foregroundStyle(.white)
-            Text(subtitle)
-                .font(.caption)
-                .foregroundStyle(Color.white.opacity(0.68))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(isSelected ? Color.white : Color.primary)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.accentColor : Color.clear)
+                )
+                .overlay {
+                    Capsule()
+                        .strokeBorder(Color.white.opacity(isSelected ? 0.12 : 0.42), lineWidth: 1)
+                }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 10)
-        .liquidGlassCapsule()
+        .buttonStyle(.plain)
     }
 }
 
-struct EventCardView: View {
-    let theme: BrandTheme
-    let event: Event
+struct SummaryMetricView: View {
+    let title: String
+    let value: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            ZStack(alignment: .topLeading) {
-                LinearGradient(
-                    colors: [theme.accent.opacity(0.92), theme.secondaryAccent.opacity(0.75), Color.black.opacity(0.7)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .frame(height: 250)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(value)
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(.primary)
+            Text(title)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .glassCard(cornerRadius: 20)
+    }
+}
 
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.white.opacity(0.14), Color.clear],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+struct FeaturedEventCard: View {
+    let event: Event
+    let theme: BrandTheme
 
-                VStack(alignment: .leading, spacing: 14) {
-                    HStack {
-                        Text(event.badgeText.uppercased())
-                            .font(.caption2.weight(.bold))
-                            .tracking(1.2)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .liquidGlassCapsule()
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label(event.badgeText, systemImage: "sparkles")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(theme.accent)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .liquidGlassCapsule()
 
-                        Spacer()
+                Spacer()
 
-                        Image(systemName: event.imageName)
-                            .font(.title2)
-                            .foregroundStyle(.white.opacity(0.95))
-                    }
-
-                    Spacer()
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(event.title)
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-
-                        Text(event.subtitle)
-                            .font(.subheadline)
-                            .foregroundStyle(Color.white.opacity(0.78))
-
-                        Text(event.hostName)
-                            .font(.footnote)
-                            .foregroundStyle(Color.white.opacity(0.60))
-                    }
-            }
-            .padding(22)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-            .overlay(alignment: .topTrailing) {
-                Circle()
-                    .fill(Color.white.opacity(0.20))
-                    .frame(width: 120, height: 120)
-                    .blur(radius: 40)
-                    .offset(x: 24, y: -16)
-                    .allowsHitTesting(false)
+                Image(systemName: event.heroSymbol)
+                    .font(.title3)
+                    .foregroundStyle(theme.accent)
+                    .padding(12)
+                    .glassCard(cornerRadius: 18)
             }
 
-            VStack(alignment: .leading, spacing: 14) {
-                HStack(spacing: 18) {
-                    EventMetaView(icon: "calendar", title: event.dateText)
-                    EventMetaView(icon: "clock", title: event.timeText)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(event.title)
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.primary)
+                Text(event.subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(event.summary)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                EventInfoPill(icon: "calendar", title: event.startsDayText)
+                EventInfoPill(icon: "clock", title: event.startTimeText)
+            }
+
+            Divider()
+
+            HStack {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(event.locationSummary)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.primary)
+                    Text(event.priceFromText)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.bold))
+                    .foregroundStyle(.tertiary)
+            }
+        }
+        .padding(22)
+        .glassCard(cornerRadius: 30)
+    }
+}
+
+struct EventRowCard: View {
+    let event: Event
+    let theme: BrandTheme
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 16) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(event.startDate.formatted(.dateTime.day()))
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(.primary)
+                Text(event.startDate.formatted(.dateTime.month(.abbreviated)))
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(width: 44)
+            .padding(.vertical, 6)
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(event.title)
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    if event.status == .soldOut {
+                        Text("Sold out")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.orange)
+                    }
+                }
+
+                Text(event.subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                HStack(spacing: 12) {
+                    Label(event.startTimeText, systemImage: "clock")
+                    Label(event.venueName, systemImage: "mappin")
+                }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
 
                 HStack {
-                    Text("From \(event.basePriceText)")
-                        .font(.title3.bold())
-                        .foregroundStyle(.white)
-
+                    Text(event.priceFromText)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(theme.accent)
                     Spacer()
-
-                    HStack(spacing: 8) {
-                        Text("View event")
-                            .font(.subheadline.weight(.semibold))
-                        Image(systemName: "arrow.up.right")
-                    }
-                    .foregroundStyle(theme.secondaryAccent)
+                    Text(event.availabilityText)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
             }
-            .padding(.horizontal, 4)
         }
         .padding(18)
-        .glassCard()
-        .padding(.horizontal, 20)
+        .glassCard(cornerRadius: 26)
     }
 }
 
-struct EventMetaView: View {
+struct EventInfoPill: View {
     let icon: String
     let title: String
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-            Text(title)
-        }
-        .font(.footnote.weight(.medium))
-        .foregroundStyle(Color.white.opacity(0.78))
+        Label(title, systemImage: icon)
+            .font(.footnote.weight(.medium))
+            .foregroundStyle(.primary)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .liquidGlassCapsule()
     }
 }
 
-struct DetailPill: View {
-    let icon: String
+struct DetailSectionCard<Content: View>: View {
     let title: String
+    let subtitle: String?
+    let content: Content
+
+    init(title: String, subtitle: String? = nil, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.subtitle = subtitle
+        self.content = content()
+    }
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-            Text(title)
-                .lineLimit(1)
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            content
         }
-        .font(.footnote.weight(.medium))
-        .foregroundStyle(.white)
-        .padding(.horizontal, 14)
-        .padding(.vertical, 10)
-        .liquidGlassCapsule()
+        .padding(20)
+        .glassCard(cornerRadius: 28)
+    }
+}
+
+struct DetailValueRow: View {
+    let icon: String
+    let title: String
+    let value: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .frame(width: 18)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                Text(value)
+                    .font(.subheadline)
+                    .foregroundStyle(.primary)
+            }
+        }
     }
 }
 
@@ -214,56 +270,52 @@ struct TicketTierRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(alignment: .top, spacing: 14) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(tier.name)
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                    Text(tier.perks)
-                        .font(.subheadline)
-                        .foregroundStyle(Color.white.opacity(0.68))
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 8) {
+                            Text(tier.name)
+                                .font(.headline.weight(.semibold))
+                                .foregroundStyle(.primary)
+                            if tier.isRecommended {
+                                Text("Recommended")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(theme.accent)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .liquidGlassCapsule()
+                            }
+                        }
+
+                        Text(tier.inventoryText)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .trailing, spacing: 6) {
+                        Text(tier.priceText)
+                            .font(.headline.weight(.semibold))
+                            .foregroundStyle(.primary)
+                        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(isSelected ? theme.accent : Color.secondary)
+                    }
                 }
 
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 6) {
-                    Text(tier.priceText)
-                        .font(.headline.bold())
-                        .foregroundStyle(.white)
-                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(isSelected ? theme.secondaryAccent : Color.white.opacity(0.38))
-                }
+                Text(tier.perksSummary)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
             .padding(18)
-            .background {
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        if isSelected {
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                .fill(theme.accent.opacity(0.20))
-                        }
-                    }
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [Color.white.opacity(0.14), .clear],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(
-                                isSelected ? theme.secondaryAccent.opacity(0.95) : Color.white.opacity(0.14),
-                                lineWidth: isSelected ? 1.5 : 1
-                            )
-                    }
-                    .shadow(color: Color.black.opacity(0.12), radius: 16, x: 0, y: 10)
+            .background(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(isSelected ? theme.accent.opacity(0.14) : Color.clear)
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .strokeBorder(isSelected ? theme.accent.opacity(0.65) : Color.white.opacity(0.28), lineWidth: 1)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .buttonStyle(.plain)
     }
@@ -275,18 +327,19 @@ struct SettingsRow: View {
     let subtitle: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(spacing: 14) {
             Image(systemName: icon)
-                .frame(width: 38, height: 38)
+                .font(.body.weight(.semibold))
+                .frame(width: 34, height: 34)
                 .glassCard(cornerRadius: 14)
-                .foregroundStyle(.white)
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .foregroundStyle(.white)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.primary)
                 Text(subtitle)
                     .font(.footnote)
-                    .foregroundStyle(Color.white.opacity(0.65))
+                    .foregroundStyle(.secondary)
             }
 
             Spacer()

@@ -1,9 +1,10 @@
-import SwiftUI
 import MapKit
+import SwiftUI
 
 struct EventDetailView: View {
     let theme: BrandTheme
     let event: Event
+
     @State private var selectedTierID: TicketTier.ID?
     @State private var showPurchaseAlert = false
 
@@ -15,7 +16,7 @@ struct EventDetailView: View {
     }
 
     private var selectedTier: TicketTier? {
-        event.ticketTiers.first { $0.id == selectedTierID }
+        event.sortedTicketTiers.first { $0.id == selectedTierID }
     }
 
     var body: some View {
@@ -23,165 +24,207 @@ struct EventDetailView: View {
             AppBackground(theme: theme)
 
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 22) {
-                    ZStack(alignment: .bottomLeading) {
-                        LinearGradient(
-                            colors: [theme.accent.opacity(0.95), theme.secondaryAccent.opacity(0.75), Color.black.opacity(0.82)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                        .frame(height: 330)
-
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(event.badgeText.uppercased())
-                                .font(.caption2.weight(.bold))
-                                .tracking(1.2)
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
-                                .liquidGlassCapsule()
-
-                            Text(event.title)
-                                .font(.system(size: 34, weight: .bold, design: .rounded))
-                                .foregroundStyle(.white)
-
-                            Text(event.subtitle)
-                                .font(.headline)
-                                .foregroundStyle(Color.white.opacity(0.78))
-
-                            Text(event.hostName)
-                                .font(.footnote)
-                                .foregroundStyle(Color.white.opacity(0.62))
-                        }
-                        .padding(24)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                    .overlay(alignment: .topTrailing) {
-                        Circle()
-                            .fill(Color.white.opacity(0.22))
-                            .frame(width: 130, height: 130)
-                            .blur(radius: 34)
-                            .offset(x: 26, y: -18)
-                    }
-                    .padding(.top, 6)
-
-                    HStack(spacing: 16) {
-                        DetailPill(icon: "calendar", title: event.dateText)
-                        DetailPill(icon: "clock", title: event.timeText)
-                        DetailPill(icon: "ticket.fill", title: "From \(event.basePriceText)")
-                    }
-
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("About this event")
-                            .font(.title3.bold())
-                            .foregroundStyle(.white)
-                        Text(event.description)
-                            .foregroundStyle(Color.white.opacity(0.72))
-                            .font(.body)
-                    }
-                    .padding(20)
-                    .glassCard()
-
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text("Location")
-                            .font(.title3.bold())
-                            .foregroundStyle(.white)
-
-                        Map(initialPosition: .region(mapRegion)) {
-                            Marker(event.title, coordinate: event.coordinate)
-                        }
-                        .frame(height: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-
-                        Label(event.address, systemImage: "mappin.and.ellipse")
-                            .foregroundStyle(Color.white.opacity(0.70))
-                            .font(.subheadline)
-                    }
-                    .padding(20)
-                    .glassCard()
-
-                    VStack(alignment: .leading, spacing: 14) {
-                        HStack {
-                            Text("Choose your access")
-                                .font(.title3.bold())
-                                .foregroundStyle(.white)
-                            Spacer()
-                            Text("\(event.ticketTiers.count) tiers")
-                                .font(.footnote)
-                                .foregroundStyle(Color.white.opacity(0.60))
-                        }
-
-                        ForEach(event.ticketTiers) { tier in
-                            TicketTierRow(
-                                tier: tier,
-                                theme: theme,
-                                isSelected: selectedTierID == tier.id
-                            ) {
-                                selectedTierID = tier.id
-                            }
-                        }
-                    }
-                    .padding(20)
-                    .glassCard()
-
-                    Button {
-                        showPurchaseAlert = true
-                    } label: {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(selectedTierID == nil ? "Select a ticket first" : "Continue to purchase")
-                                    .font(.headline)
-                                Text(selectedTier?.priceText ?? "Choose a tier to unlock checkout")
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.white.opacity(0.72))
-                            }
-
-                            Spacer()
-
-                            Image(systemName: "arrow.right")
-                                .font(.headline.bold())
-                        }
-                        .foregroundStyle(.white)
-                        .padding(20)
-                        .frame(maxWidth: .infinity)
-                        .background {
-                            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                .fill(.ultraThinMaterial)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                        .fill(
-                                            LinearGradient(
-                                                colors: selectedTierID == nil
-                                                    ? [Color.white.opacity(0.08), Color.white.opacity(0.03)]
-                                                    : [theme.accent.opacity(0.88), theme.secondaryAccent.opacity(0.66)],
-                                                startPoint: .leading,
-                                                endPoint: .trailing
-                                            )
-                                        )
-                                }
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                        .stroke(Color.white.opacity(0.16), lineWidth: 1)
-                                }
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                    }
-                    .disabled(selectedTierID == nil)
+                VStack(alignment: .leading, spacing: 20) {
+                    heroSection
+                    essentialsSection
+                    aboutSection
+                    lineupSection
+                    locationSection
+                    accessSection
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
+                .padding(.top, 12)
+                .padding(.bottom, 120)
             }
         }
-        .navigationTitle("Event")
+        .navigationTitle(event.title)
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Purchase Flow Coming Soon", isPresented: $showPurchaseAlert) {
+        .safeAreaInset(edge: .bottom) {
+            purchaseBar
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .background(.thinMaterial)
+        }
+        .alert("Checkout not connected yet", isPresented: $showPurchaseAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             if let selectedTier {
-                Text("You selected the \(selectedTier.name) ticket for \(selectedTier.priceText). The real checkout flow still needs to be connected.")
+                Text("Selected tier: \(selectedTier.name) for \(selectedTier.priceText). Firestore-backed events are ready, but payment is still a separate integration.")
             } else {
-                Text("Please select a ticket first.")
+                Text("Choose a ticket tier first.")
             }
         }
+    }
+
+    private var heroSection: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack {
+                Text(event.badgeText)
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(theme.accent)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .liquidGlassCapsule()
+
+                Spacer()
+
+                Image(systemName: event.heroSymbol)
+                    .font(.title2)
+                    .foregroundStyle(theme.accent)
+                    .padding(14)
+                    .glassCard(cornerRadius: 18)
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(event.title)
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .foregroundStyle(.primary)
+                Text(event.subtitle)
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                Text("Hosted by \(event.hostName)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(event.summary)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                EventInfoPill(icon: "calendar", title: event.startsDayText)
+                EventInfoPill(icon: "clock", title: event.timeRangeText)
+            }
+        }
+        .padding(24)
+        .glassCard(cornerRadius: 32)
+    }
+
+    private var essentialsSection: some View {
+        DetailSectionCard(title: "Essentials", subtitle: "The details most guests check before buying") {
+            VStack(alignment: .leading, spacing: 16) {
+                DetailValueRow(icon: "mappin", title: "Venue", value: event.locationSummary)
+                DetailValueRow(icon: "door.left.hand.open", title: "Doors Open", value: event.doorsOpenText)
+                DetailValueRow(icon: "ticket", title: "Availability", value: event.availabilityText)
+                DetailValueRow(icon: "person.text.rectangle", title: "Age Policy", value: event.agePolicy)
+                DetailValueRow(icon: "sparkles", title: "Dress Code", value: event.dressCode)
+            }
+        }
+    }
+
+    private var aboutSection: some View {
+        DetailSectionCard(title: "About", subtitle: "Story, vibe, and on-site details") {
+            VStack(alignment: .leading, spacing: 14) {
+                Text(event.description)
+                    .font(.body)
+                    .foregroundStyle(.primary)
+
+                if !event.musicGenres.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(event.musicGenres, id: \.self) { genre in
+                                Text(genre)
+                                    .font(.footnote.weight(.medium))
+                                    .foregroundStyle(.primary)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .liquidGlassCapsule()
+                            }
+                        }
+                    }
+                }
+
+                if !event.amenities.isEmpty {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(event.amenities, id: \.self) { amenity in
+                            Label(amenity, systemImage: "checkmark.circle.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                }
+
+                DetailValueRow(icon: "parkingsign.circle", title: "Parking", value: event.parkingInfo)
+            }
+        }
+    }
+
+    private var lineupSection: some View {
+        DetailSectionCard(title: "Lineup", subtitle: "Who is shaping the night") {
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(event.lineup, id: \.self) { artist in
+                    HStack {
+                        Text(artist)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.primary)
+                        Spacer()
+                    }
+                    .padding(14)
+                    .glassCard(cornerRadius: 20)
+                }
+            }
+        }
+    }
+
+    private var locationSection: some View {
+        DetailSectionCard(title: "Location", subtitle: event.address) {
+            VStack(alignment: .leading, spacing: 14) {
+                Map(initialPosition: .region(mapRegion)) {
+                    Marker(event.venueName, coordinate: event.coordinate)
+                }
+                .frame(height: 220)
+                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+
+                Text(event.address)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var accessSection: some View {
+        DetailSectionCard(title: "Choose Access", subtitle: "Connected directly to Firestore ticket tier data") {
+            VStack(spacing: 12) {
+                ForEach(event.sortedTicketTiers) { tier in
+                    TicketTierRow(
+                        tier: tier,
+                        theme: theme,
+                        isSelected: selectedTierID == tier.id
+                    ) {
+                        selectedTierID = tier.id
+                    }
+                }
+            }
+        }
+    }
+
+    private var purchaseBar: some View {
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(selectedTier?.name ?? "Select a ticket")
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                Text(selectedTier?.priceText ?? event.priceFromText)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                showPurchaseAlert = true
+            } label: {
+                Text(selectedTier == nil ? "Choose Access" : "Continue")
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 14)
+                    .background(theme.accent, in: Capsule())
+            }
+            .disabled(selectedTier == nil)
+            .opacity(selectedTier == nil ? 0.55 : 1)
+        }
+        .padding(16)
+        .glassCard(cornerRadius: 28)
     }
 }

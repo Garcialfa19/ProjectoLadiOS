@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var eventsViewModel = EventsViewModel()
     @State private var selectedTheme: BrandTheme = .demoBar
 
     var body: some View {
@@ -9,12 +10,13 @@ struct ContentView: View {
             if authViewModel.isLoggedIn {
                 MainTabView(theme: selectedTheme)
                     .environmentObject(authViewModel)
+                    .environmentObject(eventsViewModel)
             } else {
                 LoginView(theme: selectedTheme)
                     .environmentObject(authViewModel)
             }
         }
-        .preferredColorScheme(.dark)
+        .tint(selectedTheme.accent)
     }
 }
 
@@ -24,23 +26,22 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             NavigationStack {
-                HomeView(theme: theme, events: Event.sampleEvents)
+                HomeView(theme: theme)
             }
             .tabItem {
-                Label("Events", systemImage: "sparkles")
+                Label("Discover", systemImage: "sparkles")
             }
 
             NavigationStack {
                 SettingsView(theme: theme)
             }
             .tabItem {
-                Label("Settings", systemImage: "slider.horizontal.3")
+                Label("Account", systemImage: "person.crop.circle")
             }
         }
         .tint(theme.accent)
         .toolbarBackground(.visible, for: .tabBar)
-        .toolbarBackground(.ultraThinMaterial, for: .tabBar)
-        .toolbarColorScheme(.dark, for: .tabBar)
+        .toolbarBackground(.regularMaterial, for: .tabBar)
     }
 }
 

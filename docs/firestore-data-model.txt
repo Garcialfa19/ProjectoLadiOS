@@ -1,0 +1,126 @@
+ProjectoLad Firestore Data Model
+================================
+
+Primary collection
+- Collection: events
+- One document per live or scheduled event
+
+Why the model was expanded
+- The old demo model was mostly display text.
+- A real booking app needs structured fields so the UI can sort, filter, format dates, show live inventory, and evolve without rewriting strings by hand.
+
+Recommended event document fields
+- title: string
+- subtitle: string
+- summary: string
+- heroSymbol: string
+- badgeText: string
+- hostName: string
+- venueName: string
+- neighborhood: string
+- address: string
+- startDate: timestamp
+- endDate: timestamp
+- doorsOpen: timestamp or null
+- priceFrom: number
+- currencyCode: string
+- description: string
+- agePolicy: string
+- dressCode: string
+- parkingInfo: string
+- musicGenres: array<string>
+- lineup: array<string>
+- amenities: array<string>
+- status: string
+  Allowed values:
+  - scheduled
+  - soldOut
+  - cancelled
+- isFeatured: boolean
+- capacity: number or null
+- ticketsRemaining: number or null
+- location: map
+  - latitude: number
+  - longitude: number
+- ticketTiers: array<map>
+  Each tier should contain:
+  - code: string
+  - name: string
+  - price: number
+  - currencyCode: string
+  - perks: array<string>
+  - remainingInventory: number or null
+  - isRecommended: boolean
+
+Example event document
+{
+  "title": "Cerclé Night Sessions",
+  "subtitle": "Immersive visuals and a carefully timed DJ journey",
+  "summary": "A premium Friday headline set with a calmer, native-style booking flow and clear guest details.",
+  "heroSymbol": "waveform.badge.magnifyingglass",
+  "badgeText": "Featured",
+  "hostName": "Midnight Social",
+  "venueName": "Cercle Hall",
+  "neighborhood": "Downtown San Jose",
+  "address": "Avenida Central 124, San Jose, Costa Rica",
+  "startDate": "<Firestore Timestamp>",
+  "endDate": "<Firestore Timestamp>",
+  "doorsOpen": "<Firestore Timestamp>",
+  "priceFrom": 15,
+  "currencyCode": "USD",
+  "description": "Designed for guests who want all the practical details before buying.",
+  "agePolicy": "18+ with valid ID at entry",
+  "dressCode": "Night out attire encouraged. No beachwear or sports jerseys.",
+  "parkingInfo": "Valet at venue entrance. Limited self-parking two blocks away.",
+  "musicGenres": ["Melodic house", "Afro house", "Visual performance"],
+  "lineup": ["Sofi Vega", "Milo Aster", "Studio Norte"],
+  "amenities": ["Express check-in", "VIP lounge", "Welcome drink", "Apple Wallet pass"],
+  "status": "scheduled",
+  "isFeatured": true,
+  "capacity": 320,
+  "ticketsRemaining": 46,
+  "location": {
+    "latitude": 9.935,
+    "longitude": -84.091
+  },
+  "ticketTiers": [
+    {
+      "code": "general",
+      "name": "General",
+      "price": 15,
+      "currencyCode": "USD",
+      "perks": ["Standard entry"],
+      "remainingInventory": 30,
+      "isRecommended": false
+    },
+    {
+      "code": "fast-pass",
+      "name": "Fast Pass",
+      "price": 25,
+      "currencyCode": "USD",
+      "perks": ["Priority line", "Dedicated entry lane"],
+      "remainingInventory": 10,
+      "isRecommended": true
+    }
+  ]
+}
+
+Good additional details to add later if the product grows
+- coverImageURL for remote event artwork
+- organizerContact for support or last-minute changes
+- refundPolicy for checkout transparency
+- arrivalWindowStart and arrivalWindowEnd for timed entry
+- tableMinimum for hospitality-driven venues
+- socialLinks for artist or venue promotion
+- waitlistEnabled for sold-out events
+- walletPassTemplateID if Apple Wallet issuance is added
+
+Indexing notes
+- Start with an ascending index on startDate
+- If you filter featured events often, add a composite index on isFeatured + startDate
+- If you later query by status + date range, add a composite index on status + startDate
+
+Current app behavior
+- The app listens to the events collection in Firestore.
+- Documents are decoded directly into the Event model.
+- If Firestore is empty or unavailable, the app falls back to local sample events so the UI still works.

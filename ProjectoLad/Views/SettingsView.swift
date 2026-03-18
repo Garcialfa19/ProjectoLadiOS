@@ -11,105 +11,77 @@ struct SettingsView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Settings")
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                        Text("Manage your profile, branding hooks, and future nightlife features.")
-                            .font(.subheadline)
-                            .foregroundStyle(Color.white.opacity(0.70))
-                    }
-                    .padding(24)
-                    .glassCard(cornerRadius: 30)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
-
-                    VStack(alignment: .leading, spacing: 18) {
-                        Text("Brand")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-
-                        HStack(spacing: 14) {
-                            ZStack {
-                                Circle()
-                                    .fill(.ultraThinMaterial)
-                                    .frame(width: 54, height: 54)
-                                    .overlay {
-                                        Circle()
-                                            .fill(
-                                                LinearGradient(
-                                                    colors: [theme.accent.opacity(0.55), theme.secondaryAccent.opacity(0.32)],
-                                                    startPoint: .topLeading,
-                                                    endPoint: .bottomTrailing
-                                                )
-                                            )
-                                    }
-                                    .overlay {
-                                        Circle()
-                                            .stroke(Color.white.opacity(0.22), lineWidth: 1)
-                                    }
-
-                                Image(systemName: theme.logoSystemName)
-                                    .foregroundStyle(.white)
-                            }
-
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(theme.barName)
-                                    .font(.headline)
-                                    .foregroundStyle(.white)
-                                Text("White-label theme ready")
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.white.opacity(0.65))
-                            }
-
-                            Spacer()
-                        }
-                    }
-                    .padding(20)
-                    .glassCard()
-                    .padding(.horizontal, 20)
-
-                    VStack(alignment: .leading, spacing: 18) {
                         Text("Account")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-
-                        if let user = authViewModel.user {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(user.displayName ?? "Signed in user")
-                                    .foregroundStyle(.white)
-                                Text(user.email ?? "No email available")
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.white.opacity(0.65))
-                            }
-                        }
-
-                        Button("Sign Out", role: .destructive) {
-                            authViewModel.signOut()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.red.opacity(0.85))
+                            .font(.largeTitle.weight(.bold))
+                            .foregroundStyle(.primary)
+                        Text("Profile, product status, and the Firestore-backed event model in one place.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(20)
-                    .glassCard()
                     .padding(.horizontal, 20)
+                    .padding(.top, 12)
 
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text("Coming later")
-                            .font(.headline)
-                            .foregroundStyle(.white)
+                    profileCard
+                        .padding(.horizontal, 20)
 
-                        SettingsRow(icon: "ticket.fill", title: "Saved tickets", subtitle: "Quick access to active QR passes")
-                        SettingsRow(icon: "creditcard.fill", title: "Payment methods", subtitle: "Store preferred checkout options")
-                        SettingsRow(icon: "questionmark.circle.fill", title: "Support", subtitle: "Help center and event contact tools")
+                    productCard
+                        .padding(.horizontal, 20)
+
+                    Button("Sign Out", role: .destructive) {
+                        authViewModel.signOut()
                     }
-                    .padding(20)
-                    .glassCard()
+                    .font(.headline.weight(.semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.red.opacity(0.14), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                     .padding(.horizontal, 20)
                 }
                 .padding(.bottom, 36)
             }
         }
-        .navigationTitle("")
-        .navigationBarHidden(true)
+        .navigationTitle("Account")
+        .navigationBarTitleDisplayMode(.large)
+    }
+
+    private var profileCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 14) {
+                Image(systemName: "person.crop.circle.fill")
+                    .font(.system(size: 36))
+                    .foregroundStyle(theme.accent)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(authViewModel.user?.displayName ?? "Signed in user")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                    Text(authViewModel.user?.email ?? "No email available")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Divider()
+
+            SettingsRow(icon: "checkmark.icloud", title: "Firebase Auth", subtitle: "Apple and Google sign-in are configured.")
+            SettingsRow(icon: "shippingbox", title: "Event source", subtitle: "Events now load from Firestore with sample fallback.")
+        }
+        .padding(22)
+        .glassCard(cornerRadius: 30)
+    }
+
+    private var productCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            SectionHeaderView(
+                title: "Data now stored per event",
+                subtitle: "Good additions beyond title, date, and base price."
+            )
+
+            SettingsRow(icon: "building.2", title: "Venue context", subtitle: "Venue name, neighborhood, address, and map coordinates.")
+            SettingsRow(icon: "clock.arrow.trianglehead.counterclockwise.rotate.90", title: "Operations detail", subtitle: "Doors open, end time, live status, capacity, and tickets remaining.")
+            SettingsRow(icon: "sparkles.rectangle.stack", title: "Guest decision data", subtitle: "Lineup, genres, amenities, age policy, dress code, and parking.")
+            SettingsRow(icon: "ticket", title: "Tier detail", subtitle: "Tier code, price, perks, inventory, and recommendation state.")
+        }
+        .padding(22)
+        .glassCard(cornerRadius: 30)
     }
 }
