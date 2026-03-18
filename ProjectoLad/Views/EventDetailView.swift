@@ -39,8 +39,7 @@ struct EventDetailView: View {
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 8)
-                                .background(Color.white.opacity(0.12))
-                                .clipShape(Capsule())
+                                .liquidGlassCapsule()
 
                             Text(event.title)
                                 .font(.system(size: 34, weight: .bold, design: .rounded))
@@ -57,6 +56,13 @@ struct EventDetailView: View {
                         .padding(24)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    .overlay(alignment: .topTrailing) {
+                        Circle()
+                            .fill(Color.white.opacity(0.22))
+                            .frame(width: 130, height: 130)
+                            .blur(radius: 34)
+                            .offset(x: 26, y: -18)
+                    }
                     .padding(.top, 6)
 
                     HStack(spacing: 16) {
@@ -138,15 +144,26 @@ struct EventDetailView: View {
                         .foregroundStyle(.white)
                         .padding(20)
                         .frame(maxWidth: .infinity)
-                        .background(
-                            LinearGradient(
-                                colors: selectedTierID == nil
-                                    ? [Color.gray.opacity(0.45), Color.gray.opacity(0.28)]
-                                    : [theme.accent, theme.secondaryAccent],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        .background {
+                            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                .fill(.ultraThinMaterial)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                        .fill(
+                                            LinearGradient(
+                                                colors: selectedTierID == nil
+                                                    ? [Color.white.opacity(0.08), Color.white.opacity(0.03)]
+                                                    : [theme.accent.opacity(0.88), theme.secondaryAccent.opacity(0.66)],
+                                                startPoint: .leading,
+                                                endPoint: .trailing
+                                            )
+                                        )
+                                }
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                        .stroke(Color.white.opacity(0.16), lineWidth: 1)
+                                }
+                        }
                         .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
                     }
                     .disabled(selectedTierID == nil)

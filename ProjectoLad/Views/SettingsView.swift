@@ -18,6 +18,8 @@ struct SettingsView: View {
                             .font(.subheadline)
                             .foregroundStyle(Color.white.opacity(0.70))
                     }
+                    .padding(24)
+                    .glassCard(cornerRadius: 30)
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
@@ -29,14 +31,22 @@ struct SettingsView: View {
                         HStack(spacing: 14) {
                             ZStack {
                                 Circle()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [theme.accent, theme.secondaryAccent],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                    )
+                                    .fill(.ultraThinMaterial)
                                     .frame(width: 54, height: 54)
+                                    .overlay {
+                                        Circle()
+                                            .fill(
+                                                LinearGradient(
+                                                    colors: [theme.accent.opacity(0.55), theme.secondaryAccent.opacity(0.32)],
+                                                    startPoint: .topLeading,
+                                                    endPoint: .bottomTrailing
+                                                )
+                                            )
+                                    }
+                                    .overlay {
+                                        Circle()
+                                            .stroke(Color.white.opacity(0.22), lineWidth: 1)
+                                    }
 
                                 Image(systemName: theme.logoSystemName)
                                     .foregroundStyle(.white)

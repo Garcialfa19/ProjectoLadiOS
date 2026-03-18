@@ -11,8 +11,7 @@ struct FeatureRow: View {
                 .font(.headline)
                 .foregroundStyle(.white)
                 .frame(width: 38, height: 38)
-                .background(Color.white.opacity(0.08))
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .glassCard(cornerRadius: 14)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
@@ -45,12 +44,15 @@ struct AuthButton: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 18)
-            .background(background)
             .foregroundStyle(foreground)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-            .overlay(
+            .background(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(Color.white.opacity(0.10), lineWidth: 1)
+                    .fill(background.opacity(0.92))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .stroke(Color.white.opacity(0.16), lineWidth: 1)
+                    }
+                    .shadow(color: background.opacity(0.28), radius: 18, x: 0, y: 10)
             )
         }
     }
@@ -71,12 +73,7 @@ struct CapsuleInfo: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .background(Color.white.opacity(0.08))
-        .clipShape(Capsule())
-        .overlay(
-            Capsule()
-                .stroke(Color.white.opacity(0.10), lineWidth: 1)
-        )
+        .liquidGlassCapsule()
     }
 }
 
@@ -111,8 +108,7 @@ struct EventCardView: View {
                             .foregroundStyle(.white)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
-                            .background(Color.white.opacity(0.12))
-                            .clipShape(Capsule())
+                            .liquidGlassCapsule()
 
                         Spacer()
 
@@ -136,10 +132,18 @@ struct EventCardView: View {
                             .font(.footnote)
                             .foregroundStyle(Color.white.opacity(0.60))
                     }
-                }
-                .padding(22)
+            }
+            .padding(22)
             }
             .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+            .overlay(alignment: .topTrailing) {
+                Circle()
+                    .fill(Color.white.opacity(0.20))
+                    .frame(width: 120, height: 120)
+                    .blur(radius: 40)
+                    .offset(x: 24, y: -16)
+                    .allowsHitTesting(false)
+            }
 
             VStack(alignment: .leading, spacing: 14) {
                 HStack(spacing: 18) {
@@ -198,12 +202,7 @@ struct DetailPill: View {
         .foregroundStyle(.white)
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .background(Color.white.opacity(0.08))
-        .clipShape(Capsule())
-        .overlay(
-            Capsule()
-                .stroke(Color.white.opacity(0.10), lineWidth: 1)
-        )
+        .liquidGlassCapsule()
     }
 }
 
@@ -236,10 +235,33 @@ struct TicketTierRow: View {
                 }
             }
             .padding(18)
-            .background(isSelected ? theme.accent.opacity(0.22) : Color.white.opacity(0.05))
-            .overlay {
+            .background {
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(isSelected ? theme.secondaryAccent : Color.white.opacity(0.08), lineWidth: isSelected ? 1.5 : 1)
+                    .fill(.ultraThinMaterial)
+                    .overlay {
+                        if isSelected {
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .fill(theme.accent.opacity(0.20))
+                        }
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.white.opacity(0.14), .clear],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .stroke(
+                                isSelected ? theme.secondaryAccent.opacity(0.95) : Color.white.opacity(0.14),
+                                lineWidth: isSelected ? 1.5 : 1
+                            )
+                    }
+                    .shadow(color: Color.black.opacity(0.12), radius: 16, x: 0, y: 10)
             }
             .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
@@ -256,8 +278,7 @@ struct SettingsRow: View {
         HStack(alignment: .top, spacing: 14) {
             Image(systemName: icon)
                 .frame(width: 38, height: 38)
-                .background(Color.white.opacity(0.08))
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .glassCard(cornerRadius: 14)
                 .foregroundStyle(.white)
 
             VStack(alignment: .leading, spacing: 3) {

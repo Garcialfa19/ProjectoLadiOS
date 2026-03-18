@@ -38,6 +38,9 @@ struct MainTabView: View {
             }
         }
         .tint(theme.accent)
+        .toolbarBackground(.visible, for: .tabBar)
+        .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+        .toolbarColorScheme(.dark, for: .tabBar)
     }
 }
 

@@ -16,14 +16,22 @@ struct LoginView: View {
                     VStack(spacing: 18) {
                         ZStack {
                             Circle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [theme.accent, theme.secondaryAccent],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
+                                .fill(.ultraThinMaterial)
                                 .frame(width: 82, height: 82)
+                                .overlay {
+                                    Circle()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [theme.accent.opacity(0.55), theme.secondaryAccent.opacity(0.30)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                }
+                                .overlay {
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.26), lineWidth: 1)
+                                }
                                 .shadow(color: theme.accent.opacity(0.35), radius: 20, x: 0, y: 14)
 
                             Image(systemName: theme.logoSystemName)

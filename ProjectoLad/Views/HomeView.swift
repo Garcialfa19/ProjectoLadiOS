@@ -25,6 +25,8 @@ struct HomeView: View {
                             CapsuleInfo(title: "QR", subtitle: "Entry")
                         }
                     }
+                    .padding(24)
+                    .glassCard(cornerRadius: 30)
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
