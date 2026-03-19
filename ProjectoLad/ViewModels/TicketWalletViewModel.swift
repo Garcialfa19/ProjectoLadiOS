@@ -47,4 +47,12 @@ final class TicketWalletViewModel: ObservableObject {
         let ticket = try await repository.createTicket(for: userID, userEmail: userEmail, event: event, tier: tier)
         return ticket
     }
+
+    func markTicketAsUsed(ticketID: String, scannerID: String?) async throws {
+        try await repository.markTicketAsUsed(ticketID: ticketID, scannerID: scannerID)
+    }
+
+    func fetchTicketByQRToken(_ qrToken: String) async throws -> TicketPass? {
+        try await repository.fetchTicketByQRToken(qrToken)
+    }
 }
