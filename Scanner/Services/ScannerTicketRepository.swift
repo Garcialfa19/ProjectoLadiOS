@@ -56,10 +56,10 @@ struct ScannerTicketRepository: ScannerTicketRepositoryProtocol {
 
         let nsError = error as NSError
         if nsError.domain == FirestoreErrorDomain {
-            switch FirestoreErrorCode(rawValue: nsError.code) {
-            case .permissionDenied:
+            switch nsError.code {
+            case FirestoreErrorCode.permissionDenied.rawValue:
                 return ScannerTicketRepositoryError.permissionDenied
-            case .unavailable:
+            case FirestoreErrorCode.unavailable.rawValue:
                 return ScannerTicketRepositoryError.network
             default:
                 break
