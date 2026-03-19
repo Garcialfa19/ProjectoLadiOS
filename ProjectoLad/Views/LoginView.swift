@@ -60,6 +60,15 @@ struct LoginView: View {
                         .signInWithAppleButtonStyle(.black)
                         .frame(height: 54)
                         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+#if targetEnvironment(simulator)
+                        .disabled(true)
+                        .overlay(alignment: .topLeading) {
+                            Text("Apple Sign In on Simulator may fail unless iCloud + passcode are configured.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .offset(y: -20)
+                        }
+#endif
 
                         AuthButton(
                             title: authViewModel.isLoading ? "Signing in..." : "Continue with Google",

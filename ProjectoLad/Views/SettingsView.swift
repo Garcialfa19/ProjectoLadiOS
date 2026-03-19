@@ -4,7 +4,6 @@ struct SettingsView: View {
     let theme: BrandTheme
     @Binding var prefersDarkMode: Bool
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var ticketWalletViewModel: TicketWalletViewModel
     @State private var showPaymentAlert = false
 
     var body: some View {
@@ -43,23 +42,12 @@ struct SettingsView: View {
                         authViewModel.signOut()
                     }
                 }
-
-                WalletSectionView(
-                    tickets: ticketWalletViewModel.tickets,
-                    isLoading: ticketWalletViewModel.isLoading,
-                    errorMessage: ticketWalletViewModel.errorMessage
-                )
             }
             .listStyle(.insetGrouped)
             .scrollContentBackground(.hidden)
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
-        .task {
-            if let userID = authViewModel.user?.uid {
-                ticketWalletViewModel.startListening(userID: userID)
-            }
-        }
         .alert("Payment Methods", isPresented: $showPaymentAlert) {
             Button("OK", role: .cancel) { }
         } message: {

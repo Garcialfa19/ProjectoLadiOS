@@ -38,6 +38,13 @@ struct MainTabView: View {
             }
 
             NavigationStack {
+                WalletView(theme: theme)
+            }
+            .tabItem {
+                Label("Wallet", systemImage: "wallet.pass")
+            }
+
+            NavigationStack {
                 SettingsView(theme: theme, prefersDarkMode: $prefersDarkMode)
             }
             .tabItem {

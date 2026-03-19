@@ -2,6 +2,38 @@ import CoreImage.CIFilterBuiltins
 import SwiftUI
 import UIKit
 
+struct WalletView: View {
+    let theme: BrandTheme
+    @EnvironmentObject private var authViewModel: AuthViewModel
+    @EnvironmentObject private var ticketWalletViewModel: TicketWalletViewModel
+
+    var body: some View {
+        ZStack {
+            AppBackground(theme: theme)
+
+            List {
+                WalletSectionView(
+                    tickets: ticketWalletViewModel.tickets,
+                    isLoading: ticketWalletViewModel.isLoading,
+                    errorMessage: ticketWalletViewModel.errorMessage
+                )
+            }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+        }
+        .navigationTitle("Wallet")
+        .navigationBarTitleDisplayMode(.large)
+        .task(id: authViewModel.user?.uid) {
+            guard let userID = authViewModel.user?.uid else {
+                ticketWalletViewModel.stopListening()
+                return
+            }
+
+            ticketWalletViewModel.startListening(userID: userID)
+        }
+    }
+}
+
 struct WalletSectionView: View {
     let tickets: [TicketPass]
     let isLoading: Bool
@@ -63,6 +95,10 @@ struct WalletTicketCard: View {
                     Label(ticket.tierName, systemImage: "ticket")
                     Label(ticket.eventDateText, systemImage: "calendar")
                     Label(ticket.priceText, systemImage: "creditcard")
+                    Label("Code \(ticket.shortCode)", systemImage: "number")
+                    if let usedAt = ticket.usedAt {
+                        Label("Scanned \(usedAt.formatted(.dateTime.month(.abbreviated).day().hour().minute()))", systemImage: "checkmark.seal")
+                    }
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)

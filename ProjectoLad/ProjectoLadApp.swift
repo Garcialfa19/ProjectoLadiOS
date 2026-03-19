@@ -3,6 +3,8 @@ import FirebaseCore
 
 @main
 struct ProjectoLadApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     init() {
         FirebaseApp.configure()
     }
