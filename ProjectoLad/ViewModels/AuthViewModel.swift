@@ -146,7 +146,7 @@ final class AuthViewModel: NSObject, ObservableObject {
                 errorMessage = "Apple sign-in is unavailable on this device configuration."
             case .notInteractive:
                 errorMessage = "Apple sign-in needs an interactive session. Please retry."
-            @unknown default:
+            default:
                 errorMessage = "Apple sign-in failed: \(error.localizedDescription)"
             }
             return

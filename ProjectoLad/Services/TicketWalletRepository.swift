@@ -18,9 +18,8 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
     }
 
     func listenForTickets(userID: String, onChange: @escaping (Result<[TicketPass], Error>) -> Void) -> ListenerRegistration {
-        database.collection(walletsCollection)
-            .document(userID)
-            .collection(ticketsCollection)
+        database.collection(ticketsCollection)
+            .whereField("userID", isEqualTo: userID)
             .order(by: "purchasedAt", descending: true)
             .addSnapshotListener { snapshot, error in
                 if let error {
@@ -43,13 +42,15 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
     }
 
     func createTicket(for userID: String, userEmail: String?, event: Event, tier: TicketTier) async throws -> TicketPass {
-        let document = database.collection(walletsCollection)
+        let ticketID = UUID().uuidString.lowercased()
+        let walletDocument = database.collection(walletsCollection)
             .document(userID)
             .collection(ticketsCollection)
-            .document()
+            .document(ticketID)
+        let legacyDocument = database.collection(ticketsCollection).document(ticketID)
         let purchasedAt = Date()
         let qrToken = UUID().uuidString.lowercased()
-        let qrPayload = "nightlifepass://ticket/\(document.documentID)?wallet=\(userID)&event=\(event.id)&tier=\(tier.code)&token=\(qrToken)"
+        let qrPayload = "nightlifepass://ticket/\(ticketID)?wallet=\(userID)&event=\(event.id)&tier=\(tier.code)&token=\(qrToken)"
 
         let payload: [String: Any] = [
             "walletID": userID,
@@ -71,10 +72,18 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
             "scannedBy": NSNull()
         ]
 
-        try await document.setData(payload)
+        do {
+            try await walletDocument.setData(payload)
+        } catch {
+            if !isPermissionDenied(error) {
+                throw error
+            }
+        }
+
+        try await legacyDocument.setData(payload)
 
         return TicketPass(
-            id: document.documentID,
+            id: ticketID,
             userID: userID,
             userEmail: userEmail,
             walletID: userID,
@@ -138,6 +147,13 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
         }
 
         return try TicketPass(document: document)
+    }
+}
+
+private extension FirestoreTicketWalletRepository {
+    func isPermissionDenied(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        return nsError.code == FirestoreErrorCode.permissionDenied.rawValue
     }
 }
 
