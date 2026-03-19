@@ -1,5 +1,4 @@
 import AuthenticationServices
-import FirebaseCore
 import SwiftUI
 
 struct LoginView: View {
@@ -104,24 +103,3 @@ struct LoginView: View {
         }
     }
 }
-
-#if DEBUG
-private struct LoginPreviewHost: View {
-    @StateObject private var authViewModel = AuthViewModel()
-
-    var body: some View {
-        LoginView(theme: .demoBar)
-            .environmentObject(authViewModel)
-    }
-}
-
-#Preview {
-    Group {
-        if FirebaseApp.app() != nil {
-            LoginPreviewHost()
-        } else {
-            ContentUnavailableView("Preview requires Firebase setup", systemImage: "person.crop.circle.badge.exclamationmark", description: Text("Open the app target once to configure Firebase, then refresh this canvas."))
-        }
-    }
-}
-#endif

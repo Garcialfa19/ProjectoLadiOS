@@ -1,4 +1,3 @@
-import FirebaseCore
 import SwiftUI
 
 struct SettingsView: View {
@@ -56,27 +55,3 @@ struct SettingsView: View {
         }
     }
 }
-
-#if DEBUG
-private struct SettingsPreviewHost: View {
-    @StateObject private var authViewModel = AuthViewModel()
-    @State private var prefersDarkMode = false
-
-    var body: some View {
-        NavigationStack {
-            SettingsView(theme: .demoBar, prefersDarkMode: $prefersDarkMode)
-                .environmentObject(authViewModel)
-        }
-    }
-}
-
-#Preview {
-    Group {
-        if FirebaseApp.app() != nil {
-            SettingsPreviewHost()
-        } else {
-            ContentUnavailableView("Preview requires Firebase setup", systemImage: "gear.badge.xmark", description: Text("Open the app target once to configure Firebase, then refresh this canvas."))
-        }
-    }
-}
-#endif
