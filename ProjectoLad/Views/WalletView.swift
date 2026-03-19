@@ -219,3 +219,62 @@ struct QRCodeView: View {
         return UIImage(cgImage: cgImage)
     }
 }
+
+#if DEBUG
+private extension TicketPass {
+    static let previewSamples: [TicketPass] = [
+        TicketPass(
+            id: "preview-active-ticket-001",
+            userID: "preview-user",
+            userEmail: "preview@example.com",
+            walletID: "preview-wallet",
+            eventID: Event.sampleEvents[0].id,
+            eventTitle: Event.sampleEvents[0].title,
+            venueName: Event.sampleEvents[0].venueName,
+            eventStartDate: Event.sampleEvents[0].startDate,
+            tierCode: "fast-pass",
+            tierName: "Fast Pass",
+            price: 25,
+            currencyCode: "USD",
+            qrToken: "preview-token-001",
+            qrPayload: "nightlifepass://ticket/preview-active-ticket-001",
+            appleWalletPassURL: nil,
+            status: .active,
+            purchasedAt: .now,
+            usedAt: nil,
+            scannedBy: nil
+        ),
+        TicketPass(
+            id: "preview-used-ticket-002",
+            userID: "preview-user",
+            userEmail: "preview@example.com",
+            walletID: "preview-wallet",
+            eventID: Event.sampleEvents[1].id,
+            eventTitle: Event.sampleEvents[1].title,
+            venueName: Event.sampleEvents[1].venueName,
+            eventStartDate: Event.sampleEvents[1].startDate,
+            tierCode: "premium",
+            tierName: "Premium",
+            price: 35,
+            currencyCode: "USD",
+            qrToken: "preview-token-002",
+            qrPayload: "nightlifepass://ticket/preview-used-ticket-002",
+            appleWalletPassURL: nil,
+            status: .used,
+            purchasedAt: .now.addingTimeInterval(-86_400),
+            usedAt: .now.addingTimeInterval(-43_200),
+            scannedBy: "preview-scanner"
+        )
+    ]
+}
+
+#Preview {
+    NavigationStack {
+        List {
+            WalletSectionView(tickets: .previewSamples, isLoading: false, errorMessage: nil)
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle("Wallet")
+    }
+}
+#endif

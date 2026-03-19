@@ -1,3 +1,4 @@
+import FirebaseCore
 import SwiftUI
 
 struct ContentView: View {
@@ -58,5 +59,11 @@ struct MainTabView: View {
 }
 
 #Preview {
-    ContentView()
+    Group {
+        if FirebaseApp.app() != nil {
+            ContentView()
+        } else {
+            ContentUnavailableView("Preview requires Firebase setup", systemImage: "bolt.slash", description: Text("Open the app target once to configure Firebase, then refresh this canvas."))
+        }
+    }
 }
