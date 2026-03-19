@@ -132,7 +132,27 @@ final class AuthViewModel: NSObject, ObservableObject {
     }
 
     func handleAppleError(_ error: Error) {
-        errorMessage = error.localizedDescription
+        if let authError = error as? ASAuthorizationError {
+            switch authError.code {
+            case .canceled:
+                errorMessage = "Apple sign-in was canceled."
+            case .notHandled:
+                errorMessage = "Apple sign-in could not be completed. Please try again."
+            case .failed:
+                errorMessage = "Apple sign-in failed. On Simulator, enable passcode and sign in to iCloud, or test on a physical device."
+            case .invalidResponse:
+                errorMessage = "Apple sign-in returned an invalid response."
+            case .unknown:
+                errorMessage = "Apple sign-in is unavailable on this device configuration."
+            case .notInteractive:
+                errorMessage = "Apple sign-in needs an interactive session. Please retry."
+            default:
+                errorMessage = "Apple sign-in failed: \(error.localizedDescription)"
+            }
+            return
+        }
+
+        errorMessage = "Apple sign-in failed: \(error.localizedDescription)"
     }
 }
 
