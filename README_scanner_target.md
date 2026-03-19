@@ -37,6 +37,8 @@ The scanner app is implemented as a second app target (`ProjectoLadScanner`) in 
 4. Ensure `GoogleService-Info.plist` is included in scanner target membership.
 5. Run on a physical iPhone for camera testing.
 
+If the plist is missing, the scanner app now shows a setup message screen instead of crashing.
+
 ## Firebase setup
 
 - Firebase Auth: enable Email/Password provider.
