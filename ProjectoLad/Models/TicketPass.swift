@@ -15,6 +15,7 @@ struct TicketPass: Identifiable, Hashable {
     let currencyCode: String
     let qrToken: String
     let qrPayload: String
+    let appleWalletPassURL: URL?
     let status: TicketPassStatus
     let purchasedAt: Date
     let usedAt: Date?

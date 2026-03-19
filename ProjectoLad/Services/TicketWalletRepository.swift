@@ -20,7 +20,6 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
     func listenForTickets(userID: String, onChange: @escaping (Result<[TicketPass], Error>) -> Void) -> ListenerRegistration {
         database.collection(ticketsCollection)
             .whereField("userID", isEqualTo: userID)
-            .order(by: "purchasedAt", descending: true)
             .addSnapshotListener { snapshot, error in
                 if let error {
                     onChange(.failure(error))
@@ -33,7 +32,9 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
                 }
 
                 do {
-                    let tickets = try snapshot.documents.map(TicketPass.init(document:))
+                    let tickets = try snapshot.documents
+                        .map(TicketPass.init(document:))
+                        .sorted(by: { $0.purchasedAt > $1.purchasedAt })
                     onChange(.success(tickets))
                 } catch {
                     onChange(.failure(error))
@@ -69,7 +70,8 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
             "status": TicketPassStatus.active.rawValue,
             "purchasedAt": Timestamp(date: purchasedAt),
             "usedAt": NSNull(),
-            "scannedBy": NSNull()
+            "scannedBy": NSNull(),
+            "appleWalletPassURL": NSNull()
         ]
 
         do {
@@ -97,6 +99,7 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
             currencyCode: tier.currencyCode,
             qrToken: qrToken,
             qrPayload: qrPayload,
+            appleWalletPassURL: nil,
             status: .active,
             purchasedAt: purchasedAt,
             usedAt: nil,
@@ -195,6 +198,7 @@ private extension TicketPass {
             currencyCode: currencyCode,
             qrToken: qrToken,
             qrPayload: qrPayload,
+            appleWalletPassURL: (data["appleWalletPassURL"] as? String).flatMap(URL.init(string:)),
             status: status,
             purchasedAt: purchasedAt,
             usedAt: (data["usedAt"] as? Timestamp)?.dateValue(),
