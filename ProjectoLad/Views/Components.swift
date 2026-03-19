@@ -321,25 +321,3 @@ struct SettingsRow: View {
         }
     }
 }
-
-#if DEBUG
-#Preview {
-    VStack(spacing: 16) {
-        AuthButton(
-            title: "Continue with Google",
-            systemImage: "globe",
-            background: Color(uiColor: .secondarySystemBackground),
-            foreground: .primary
-        ) { }
-
-        EventRowCard(event: Event.sampleEvents[0], theme: .demoBar)
-
-        TicketTierRow(
-            tier: Event.sampleEvents[0].ticketTiers[1],
-            theme: .demoBar,
-            isSelected: true
-        ) { }
-    }
-    .padding()
-}
-#endif

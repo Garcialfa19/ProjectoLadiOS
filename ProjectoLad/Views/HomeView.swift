@@ -1,4 +1,3 @@
-import FirebaseFirestore
 import SwiftUI
 
 struct HomeView: View {
@@ -53,25 +52,3 @@ struct HomeView: View {
         }
     }
 }
-
-#if DEBUG
-private struct HomeViewPreviewRepository: EventsRepositoryProtocol {
-    let events: [Event]
-
-    func listenForEvents(onChange: @escaping (Result<[Event], any Error>) -> Void) -> ListenerRegistration {
-        onChange(.success(events))
-        return HomeViewPreviewListener()
-    }
-}
-
-private final class HomeViewPreviewListener: ListenerRegistration {
-    func remove() {}
-}
-
-#Preview {
-    NavigationStack {
-        HomeView(theme: .demoBar)
-            .environmentObject(EventsViewModel(repository: HomeViewPreviewRepository(events: Event.sampleEvents)))
-    }
-}
-#endif

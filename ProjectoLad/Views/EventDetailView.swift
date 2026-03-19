@@ -1,4 +1,3 @@
-import FirebaseCore
 import MapKit
 import SwiftUI
 
@@ -287,28 +286,3 @@ struct EventDetailView: View {
         isPurchasing = false
     }
 }
-
-#if DEBUG
-private struct EventDetailPreviewHost: View {
-    @StateObject private var authViewModel = AuthViewModel()
-    @StateObject private var ticketWalletViewModel = TicketWalletViewModel()
-
-    var body: some View {
-        NavigationStack {
-            EventDetailView(theme: .demoBar, event: Event.sampleEvents[0])
-                .environmentObject(authViewModel)
-                .environmentObject(ticketWalletViewModel)
-        }
-    }
-}
-
-#Preview {
-    Group {
-        if FirebaseApp.app() != nil {
-            EventDetailPreviewHost()
-        } else {
-            ContentUnavailableView("Preview requires Firebase setup", systemImage: "bolt.slash", description: Text("Open the app target once to configure Firebase, then refresh this canvas."))
-        }
-    }
-}
-#endif
