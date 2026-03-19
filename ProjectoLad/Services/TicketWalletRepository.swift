@@ -12,9 +12,14 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
     private let database: Firestore
     private let ticketsCollection = "tickets"
     private let walletsCollection = "wallets"
+    private let redemptionStore: TicketRedemptionStoreProtocol
 
-    init(database: Firestore = Firestore.firestore()) {
+    init(
+        database: Firestore = Firestore.firestore(),
+        redemptionStore: TicketRedemptionStoreProtocol? = nil
+    ) {
         self.database = database
+        self.redemptionStore = redemptionStore ?? FirestoreTicketRedemptionStore(database: database)
     }
 
     func listenForTickets(userID: String, onChange: @escaping (Result<[TicketPass], Error>) -> Void) -> ListenerRegistration {
@@ -108,34 +113,15 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
     }
 
     func markTicketAsUsed(ticketID: String, scannerID: String?) async throws {
-        let querySnapshot = try await database.collectionGroup(ticketsCollection)
-            .whereField(FieldPath.documentID(), isEqualTo: ticketID)
-            .limit(to: 1)
-            .getDocuments()
-
-        guard let reference = querySnapshot.documents.first?.reference else {
-            throw TicketWalletRepositoryError.ticketNotFound
-        }
-
-        let _ = try await database.runTransaction { transaction, errorPointer -> Any? in
-            guard let snapshot = try? transaction.getDocument(reference) else {
-                errorPointer?.pointee = TicketWalletRepositoryError.ticketNotFound as NSError
-                return nil
+        do {
+            try await redemptionStore.markTicketAsUsed(ticketID: ticketID, scannerID: scannerID)
+        } catch let error as SharedTicketRedemptionError {
+            switch error {
+            case .ticketNotFound:
+                throw TicketWalletRepositoryError.ticketNotFound
+            case .ticketAlreadyUsed:
+                throw TicketWalletRepositoryError.ticketAlreadyUsed
             }
-
-            let statusRawValue = snapshot.get("status") as? String ?? TicketPassStatus.invalidated.rawValue
-            guard statusRawValue == TicketPassStatus.active.rawValue else {
-                errorPointer?.pointee = TicketWalletRepositoryError.ticketAlreadyUsed as NSError
-                return nil
-            }
-
-            transaction.updateData([
-                "status": TicketPassStatus.used.rawValue,
-                "usedAt": Timestamp(date: Date()),
-                "scannedBy": scannerID as Any
-            ], forDocument: reference)
-
-            return nil
         }
     }
 
