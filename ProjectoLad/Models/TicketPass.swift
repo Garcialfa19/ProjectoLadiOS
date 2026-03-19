@@ -41,20 +41,3 @@ struct TicketPass: Identifiable, Hashable {
         String(id.suffix(8)).uppercased()
     }
 }
-
-enum TicketPassStatus: String, Hashable {
-    case active
-    case used
-    case invalidated
-
-    var displayTitle: String {
-        switch self {
-        case .active:
-            return "Active"
-        case .used:
-            return "Used"
-        case .invalidated:
-            return "Invalid"
-        }
-    }
-}
