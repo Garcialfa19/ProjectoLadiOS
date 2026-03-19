@@ -105,19 +105,17 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
             throw TicketWalletRepositoryError.ticketNotFound
         }
 
-        let _ = try await database.runTransaction { transaction, errorPointer -> Any? in
+        try await database.runTransaction { transaction, _ in
             let snapshot: DocumentSnapshot
             do {
                 snapshot = try transaction.getDocument(reference)
             } catch {
-                errorPointer?.pointee = TicketWalletRepositoryError.ticketNotFound as NSError
-                return nil
+                throw TicketWalletRepositoryError.ticketNotFound
             }
 
             let statusRawValue = snapshot.get("status") as? String ?? TicketPassStatus.invalidated.rawValue
             guard statusRawValue == TicketPassStatus.active.rawValue else {
-                errorPointer?.pointee = TicketWalletRepositoryError.ticketAlreadyUsed as NSError
-                return nil
+                throw TicketWalletRepositoryError.ticketAlreadyUsed
             }
 
             transaction.updateData([
