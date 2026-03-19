@@ -16,6 +16,9 @@
 		63EDB7442F628789004BAE5B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 63EDB7432F628789004BAE5B /* FirebaseFirestore */; };
 		63EDB7462F628789004BAE5B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 63EDB7452F628789004BAE5B /* FirebaseStorage */; };
 		63EDB7482F628789004BAE5B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 63EDB7472F628789004BAE5B /* FirebaseStorageCombine-Community */; };
+		A10000012F70000100AAA001 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A10001002F70000100AAA001 /* FirebaseAuth */; };
+		A10000022F70000100AAA001 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10001012F70000100AAA001 /* FirebaseCore */; };
+		A10000032F70000100AAA001 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A10001022F70000100AAA001 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +42,7 @@
 		63EDB7062F627A05004BAE5B /* ProjectoLad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectoLad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EDB7162F627A06004BAE5B /* ProjectoLadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectoLadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EDB7202F627A06004BAE5B /* ProjectoLadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectoLadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000042F70000100AAA001 /* ProjectoLadScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectoLadScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -48,6 +52,13 @@
 				Info.plist,
 			);
 			target = 63EDB7052F627A05004BAE5B /* ProjectoLad */;
+		};
+		A10000052F70000100AAA001 /* Exceptions for "ScannerApp" folder in "ProjectoLadScanner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A100000E2F70000100AAA001 /* ProjectoLadScanner */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -68,6 +79,24 @@
 		63EDB7232F627A06004BAE5B /* ProjectoLadUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ProjectoLadUITests;
+			sourceTree = "<group>";
+		};
+		A10000062F70000100AAA001 /* ScannerApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A10000052F70000100AAA001 /* Exceptions for "ScannerApp" folder in "ProjectoLadScanner" target */,
+			);
+			path = ScannerApp;
+			sourceTree = "<group>";
+		};
+		A10000072F70000100AAA001 /* Scanner */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		A10000082F70000100AAA001 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -103,6 +132,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10000092F70000100AAA001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000012F70000100AAA001 /* FirebaseAuth in Frameworks */,
+				A10000022F70000100AAA001 /* FirebaseCore in Frameworks */,
+				A10000032F70000100AAA001 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -112,6 +151,9 @@
 				63EDB7082F627A05004BAE5B /* ProjectoLad */,
 				63EDB7192F627A06004BAE5B /* ProjectoLadTests */,
 				63EDB7232F627A06004BAE5B /* ProjectoLadUITests */,
+				A10000062F70000100AAA001 /* ScannerApp */,
+				A10000072F70000100AAA001 /* Scanner */,
+				A10000082F70000100AAA001 /* Shared */,
 				63EDB7072F627A05004BAE5B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,6 +164,7 @@
 				63EDB7062F627A05004BAE5B /* ProjectoLad.app */,
 				63EDB7162F627A06004BAE5B /* ProjectoLadTests.xctest */,
 				63EDB7202F627A06004BAE5B /* ProjectoLadUITests.xctest */,
+				A10000042F70000100AAA001 /* ProjectoLadScanner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,6 +186,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				63EDB7082F627A05004BAE5B /* ProjectoLad */,
+				A10000072F70000100AAA001 /* Scanner */,
+				A10000082F70000100AAA001 /* Shared */,
 			);
 			name = ProjectoLad;
 			packageProductDependencies = (
@@ -206,6 +251,33 @@
 			productReference = 63EDB7202F627A06004BAE5B /* ProjectoLadUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		A100000E2F70000100AAA001 /* ProjectoLadScanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000142F70000100AAA001 /* Build configuration list for PBXNativeTarget "ProjectoLadScanner" */;
+			buildPhases = (
+				A100000A2F70000100AAA001 /* Sources */,
+				A10000092F70000100AAA001 /* Frameworks */,
+				A100000B2F70000100AAA001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A10000062F70000100AAA001 /* ScannerApp */,
+				A10000072F70000100AAA001 /* Scanner */,
+				A10000082F70000100AAA001 /* Shared */,
+			);
+			name = ProjectoLadScanner;
+			packageProductDependencies = (
+				A10001002F70000100AAA001 /* FirebaseAuth */,
+				A10001012F70000100AAA001 /* FirebaseCore */,
+				A10001022F70000100AAA001 /* FirebaseFirestore */,
+			);
+			productName = ProjectoLadScanner;
+			productReference = A10000042F70000100AAA001 /* ProjectoLadScanner.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -226,6 +298,9 @@
 					63EDB71F2F627A06004BAE5B = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 63EDB7052F627A05004BAE5B;
+					};
+					A100000E2F70000100AAA001 = {
+						CreatedOnToolsVersion = 16.2;
 					};
 				};
 			};
@@ -250,6 +325,7 @@
 				63EDB7052F627A05004BAE5B /* ProjectoLad */,
 				63EDB7152F627A06004BAE5B /* ProjectoLadTests */,
 				63EDB71F2F627A06004BAE5B /* ProjectoLadUITests */,
+				A100000E2F70000100AAA001 /* ProjectoLadScanner */,
 			);
 		};
 /* End PBXProject section */
@@ -276,6 +352,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A100000B2F70000100AAA001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -294,6 +377,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		63EDB71C2F627A06004BAE5B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A100000A2F70000100AAA001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -563,6 +653,58 @@
 			};
 			name = Release;
 		};
+		A10000122F70000100AAA001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScannerApp/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proyectolad.scanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A10000132F70000100AAA001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScannerApp/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proyectolad.scanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -598,6 +740,15 @@
 			buildConfigurations = (
 				63EDB7312F627A06004BAE5B /* Debug */,
 				63EDB7322F627A06004BAE5B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000142F70000100AAA001 /* Build configuration list for PBXNativeTarget "ProjectoLadScanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000122F70000100AAA001 /* Debug */,
+				A10000132F70000100AAA001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -668,6 +819,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63EDB73A2F628789004BAE5B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		A10001002F70000100AAA001 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63EDB73A2F628789004BAE5B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		A10001012F70000100AAA001 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63EDB73A2F628789004BAE5B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		A10001022F70000100AAA001 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63EDB73A2F628789004BAE5B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
