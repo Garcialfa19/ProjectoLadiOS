@@ -85,16 +85,6 @@ struct LoginView: View {
                     .glassCard(cornerRadius: 30)
                     .padding(.horizontal, 20)
 
-                    VStack(alignment: .leading, spacing: 14) {
-                        SectionHeaderView(
-                            title: "What is improved",
-                            subtitle: "These are now first-class pieces of the event model."
-                        )
-
-                        SettingsRow(icon: "clock.badge.checkmark", title: "Doors and timing", subtitle: "Guests can see when doors open and when the event ends.")
-                        SettingsRow(icon: "music.note.list", title: "Lineup and genres", subtitle: "The event detail screen now supports lineup and genre data.")
-                        SettingsRow(icon: "person.text.rectangle", title: "Entry guidance", subtitle: "Age policy, dress code, and parking are part of the model.")
-                    }
                     .padding(22)
                     .glassCard(cornerRadius: 30)
                     .padding(.horizontal, 20)
