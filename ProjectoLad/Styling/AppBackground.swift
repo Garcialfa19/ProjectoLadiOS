@@ -7,38 +7,30 @@ struct AppBackground: View {
 
     var body: some View {
         ZStack {
-            Color(uiColor: colorScheme == .dark ? .systemBackground : .secondarySystemBackground)
+            Color(uiColor: colorScheme == .dark ? .black : .systemGroupedBackground)
                 .ignoresSafeArea()
 
             LinearGradient(
                 colors: [
-                    theme.accent.opacity(colorScheme == .dark ? 0.18 : 0.12),
-                    theme.secondaryAccent.opacity(colorScheme == .dark ? 0.12 : 0.08),
+                    theme.accent.opacity(colorScheme == .dark ? 0.16 : 0.10),
+                    theme.secondaryAccent.opacity(colorScheme == .dark ? 0.08 : 0.05),
                     .clear
                 ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
 
-            Circle()
-                .fill(theme.accent.opacity(colorScheme == .dark ? 0.18 : 0.12))
-                .frame(width: 320, height: 320)
-                .blur(radius: 70)
-                .offset(x: -120, y: -260)
-
-            Circle()
-                .fill(theme.secondaryAccent.opacity(colorScheme == .dark ? 0.16 : 0.10))
-                .frame(width: 280, height: 280)
-                .blur(radius: 70)
-                .offset(x: 170, y: -200)
-
-            RoundedRectangle(cornerRadius: 120, style: .continuous)
-                .fill(Color.white.opacity(colorScheme == .dark ? 0.06 : 0.24))
-                .frame(width: 260, height: 220)
-                .blur(radius: 45)
-                .rotationEffect(.degrees(12))
-                .offset(x: 150, y: 320)
+            RadialGradient(
+                colors: [
+                    Color.white.opacity(colorScheme == .dark ? 0.10 : 0.22),
+                    .clear
+                ],
+                center: .topTrailing,
+                startRadius: 20,
+                endRadius: 360
+            )
+            .ignoresSafeArea()
         }
     }
 }
@@ -49,14 +41,14 @@ private struct LiquidGlassBackground: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-            .fill(.regularMaterial)
+            .fill(.thinMaterial)
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(colorScheme == .dark ? 0.24 : 0.55),
-                                Color.white.opacity(colorScheme == .dark ? 0.10 : 0.16),
+                                Color.white.opacity(colorScheme == .dark ? 0.18 : 0.42),
+                                Color.white.opacity(colorScheme == .dark ? 0.06 : 0.12),
                                 .clear
                             ],
                             startPoint: .topLeading,
@@ -67,9 +59,9 @@ private struct LiquidGlassBackground: View {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(Color.white.opacity(colorScheme == .dark ? 0.18 : 0.48), lineWidth: 1)
+                    .strokeBorder(Color.white.opacity(colorScheme == .dark ? 0.12 : 0.34), lineWidth: 1)
             }
-            .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.16 : 0.06), radius: 24, x: 0, y: 16)
+            .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.14 : 0.05), radius: 16, x: 0, y: 8)
     }
 }
 
@@ -96,7 +88,7 @@ extension View {
                 .fill(.thinMaterial)
                 .overlay {
                     Capsule()
-                        .strokeBorder(Color.white.opacity(0.22), lineWidth: 1)
+                        .strokeBorder(Color.white.opacity(0.18), lineWidth: 1)
                 }
         }
     }

@@ -1,0 +1,55 @@
+Easy Ways To Add Test Events To Firestore
+=========================================
+
+Easiest option for now
+- Use the Firebase Console manually.
+- Go to Firestore Database.
+- Create a collection named `events`.
+- Add one document per event.
+- Use the `documentID` values from `firestore-example-events.json` as the document IDs.
+
+Important note about dates
+- In the JSON examples, dates are written as ISO strings because that is easy to read and share.
+- In Firestore, `startDate`, `endDate`, and `doorsOpen` should be saved as Timestamp fields, not strings.
+
+Recommended manual testing workflow
+1. Open [firestore-example-events.json](/Users/david/Desktop/ProjectoLadiOS/docs/firestore-example-events.json).
+2. Copy one event at a time into the Firebase Console.
+3. Convert the three date fields into Firestore Timestamp values when you create the document.
+4. Keep the collection name exactly `events`.
+5. Launch the app and confirm the sample fallback message disappears once Firestore documents load.
+
+Why this is the easiest path
+- No extra tooling required.
+- You can quickly edit fields to test UI edge cases.
+- It matches how a future dashboard will write data, just without building the dashboard yet.
+
+Useful test cases to try
+- One event with `ticketsRemaining` under 25 to verify the "Selling Fast" filter.
+- One event with `status` set to `soldOut`.
+- One event with only two ticket tiers.
+- One event with no `doorsOpen` value to verify optional handling.
+- One event with a long lineup array to test vertical spacing.
+
+If you want something slightly faster than manual entry
+- The next easiest option is a one-off seed script using the Firebase Admin SDK.
+- That would let you run one command locally and populate all example events at once.
+- This repo now includes that script.
+
+One-command seed workflow
+1. Create a Firebase service account key in the Firebase Console.
+2. Save the JSON key somewhere local, for example `/absolute/path/service-account.json`.
+3. From the repo root, install the tooling dependency:
+   `npm install`
+4. Run:
+   `FIREBASE_SERVICE_ACCOUNT_PATH=/absolute/path/service-account.json npm run seed:events`
+
+Optional environment overrides
+- `FIREBASE_PROJECT_ID` if you want to force a specific Firebase project.
+- `EVENTS_FILE_PATH` if you want to seed a different JSON file.
+
+What the command does
+- Reads [firestore-example-events.json](/Users/david/Desktop/ProjectoLadiOS/docs/firestore-example-events.json)
+- Converts the date strings into Firestore Timestamps
+- Writes each entry into the `events` collection using its `documentID`
+- Uses `merge: true` so you can rerun it without deleting documents first

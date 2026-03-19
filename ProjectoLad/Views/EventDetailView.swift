@@ -5,8 +5,13 @@ struct EventDetailView: View {
     let theme: BrandTheme
     let event: Event
 
+    @EnvironmentObject private var authViewModel: AuthViewModel
+    @EnvironmentObject private var ticketWalletViewModel: TicketWalletViewModel
     @State private var selectedTierID: TicketTier.ID?
     @State private var showPurchaseAlert = false
+    @State private var purchaseAlertTitle = "Ticket added to Wallet"
+    @State private var purchaseAlertMessage = ""
+    @State private var isPurchasing = false
 
     private var mapRegion: MKCoordinateRegion {
         MKCoordinateRegion(
@@ -23,19 +28,33 @@ struct EventDetailView: View {
         ZStack {
             AppBackground(theme: theme)
 
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 20) {
+            List {
+                Section {
                     heroSection
+                }
+
+                Section {
                     essentialsSection
+                }
+
+                Section {
                     aboutSection
+                }
+
+                Section {
                     lineupSection
+                }
+
+                Section {
                     locationSection
+                }
+
+                Section {
                     accessSection
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-                .padding(.bottom, 120)
             }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
         }
         .navigationTitle(event.title)
         .navigationBarTitleDisplayMode(.inline)
@@ -45,14 +64,10 @@ struct EventDetailView: View {
                 .padding(.top, 8)
                 .background(.thinMaterial)
         }
-        .alert("Checkout not connected yet", isPresented: $showPurchaseAlert) {
+        .alert(purchaseAlertTitle, isPresented: $showPurchaseAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            if let selectedTier {
-                Text("Selected tier: \(selectedTier.name) for \(selectedTier.priceText). Firestore-backed events are ready, but payment is still a separate integration.")
-            } else {
-                Text("Choose a ticket tier first.")
-            }
+            Text(purchaseAlertMessage)
         }
     }
 
@@ -96,8 +111,7 @@ struct EventDetailView: View {
                 EventInfoPill(icon: "clock", title: event.timeRangeText)
             }
         }
-        .padding(24)
-        .glassCard(cornerRadius: 32)
+        .padding(.vertical, 8)
     }
 
     private var essentialsSection: some View {
@@ -212,19 +226,63 @@ struct EventDetailView: View {
             Spacer()
 
             Button {
-                showPurchaseAlert = true
+                Task {
+                    await purchaseSelectedTicket()
+                }
             } label: {
-                Text(selectedTier == nil ? "Choose Access" : "Continue")
+                Text(buttonTitle)
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 22)
                     .padding(.vertical, 14)
                     .background(theme.accent, in: Capsule())
             }
-            .disabled(selectedTier == nil)
-            .opacity(selectedTier == nil ? 0.55 : 1)
+            .disabled(selectedTier == nil || isPurchasing)
+            .opacity((selectedTier == nil || isPurchasing) ? 0.55 : 1)
         }
         .padding(16)
-        .glassCard(cornerRadius: 28)
+        .glassCard(cornerRadius: 24)
+    }
+
+    private var buttonTitle: String {
+        if isPurchasing { return "Creating Ticket..." }
+        return selectedTier == nil ? "Choose Access" : "Continue"
+    }
+
+    private func purchaseSelectedTicket() async {
+        guard let user = authViewModel.user else {
+            purchaseAlertTitle = "Sign in required"
+            purchaseAlertMessage = "You need to be signed in before a ticket can be created."
+            showPurchaseAlert = true
+            return
+        }
+
+        guard let selectedTier else {
+            purchaseAlertTitle = "Choose a ticket"
+            purchaseAlertMessage = "Select a ticket tier first."
+            showPurchaseAlert = true
+            return
+        }
+
+        isPurchasing = true
+
+        do {
+            let ticket = try await ticketWalletViewModel.purchaseTicket(
+                userID: user.uid,
+                userEmail: user.email,
+                event: event,
+                tier: selectedTier
+            )
+
+            purchaseAlertTitle = "Ticket added to Wallet"
+            purchaseAlertMessage = "A unique QR ticket for \(ticket.tierName) was created and stored in Firebase. It will appear in Wallet and can later be invalidated by your scanning system."
+            showPurchaseAlert = true
+        } catch {
+            purchaseAlertTitle = "Ticket creation failed"
+            purchaseAlertMessage = error.localizedDescription
+            showPurchaseAlert = true
+        }
+
+        isPurchasing = false
     }
 }

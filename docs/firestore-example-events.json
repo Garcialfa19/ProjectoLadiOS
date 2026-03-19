@@ -1,0 +1,237 @@
+[
+  {
+    "documentID": "cercle-night-sessions-2026-03-20",
+    "title": "Cerclé Night Sessions",
+    "subtitle": "Immersive visuals and a carefully timed DJ journey",
+    "summary": "A premium Friday headline set with a calmer, native-style booking flow and clear guest details.",
+    "heroSymbol": "waveform.badge.magnifyingglass",
+    "badgeText": "Featured",
+    "hostName": "Midnight Social",
+    "venueName": "Cercle Hall",
+    "neighborhood": "Downtown San Jose",
+    "address": "Avenida Central 124, San Jose, Costa Rica",
+    "startDate": "2026-03-20T21:00:00-06:00",
+    "endDate": "2026-03-21T02:00:00-06:00",
+    "doorsOpen": "2026-03-20T20:15:00-06:00",
+    "priceFrom": 15,
+    "currencyCode": "USD",
+    "description": "Designed for guests who want all the practical details before buying: lineup, arrival window, dress expectations, and live ticket availability.",
+    "agePolicy": "18+ with valid ID at entry",
+    "dressCode": "Night out attire encouraged. No beachwear or sports jerseys.",
+    "parkingInfo": "Valet at venue entrance. Limited self-parking two blocks away.",
+    "musicGenres": ["Melodic house", "Afro house", "Visual performance"],
+    "lineup": ["Sofi Vega", "Milo Aster", "Closing visual set by Studio Norte"],
+    "amenities": ["Express check-in", "VIP lounge", "Welcome drink", "Apple Wallet pass"],
+    "status": "scheduled",
+    "isFeatured": true,
+    "capacity": 320,
+    "ticketsRemaining": 46,
+    "location": {
+      "latitude": 9.935,
+      "longitude": -84.091
+    },
+    "ticketTiers": [
+      {
+        "code": "general",
+        "name": "General",
+        "price": 15,
+        "currencyCode": "USD",
+        "perks": ["Standard entry"],
+        "remainingInventory": 30,
+        "isRecommended": false
+      },
+      {
+        "code": "fast-pass",
+        "name": "Fast Pass",
+        "price": 25,
+        "currencyCode": "USD",
+        "perks": ["Priority line", "Dedicated entry lane"],
+        "remainingInventory": 10,
+        "isRecommended": true
+      },
+      {
+        "code": "vip",
+        "name": "VIP",
+        "price": 50,
+        "currencyCode": "USD",
+        "perks": ["VIP lounge", "Welcome drink", "Reserved host check-in"],
+        "remainingInventory": 6,
+        "isRecommended": false
+      }
+    ]
+  },
+  {
+    "documentID": "unveiled-rooftop-2026-03-21",
+    "title": "Unveiled Rooftop",
+    "subtitle": "Sunset house set with table-first hospitality",
+    "summary": "A rooftop evening optimized for premium groups, clearer table options, and concise event planning.",
+    "heroSymbol": "sun.max",
+    "badgeText": "Limited",
+    "hostName": "NightLife Pass",
+    "venueName": "Unveiled Rooftop",
+    "neighborhood": "Escazu",
+    "address": "Skyline Tower, Escazu, San Jose, Costa Rica",
+    "startDate": "2026-03-21T19:30:00-06:00",
+    "endDate": "2026-03-22T01:00:00-06:00",
+    "doorsOpen": "2026-03-21T18:45:00-06:00",
+    "priceFrom": 20,
+    "currencyCode": "USD",
+    "description": "The listing emphasizes arrival timing, bottle-service positioning, and how much inventory remains by tier so guests can decide quickly.",
+    "agePolicy": "21+ after 10 PM",
+    "dressCode": "Smart casual. Dress shoes and elevated evening wear preferred.",
+    "parkingInfo": "Underground paid parking in Skyline Tower.",
+    "musicGenres": ["Sunset house", "Disco edits", "Vocal deep house"],
+    "lineup": ["Luna Sol", "Mar de Oro", "Rooftop close by Casa Color"],
+    "amenities": ["Reserved table support", "Bottle service", "Outdoor terrace", "Photo moment"],
+    "status": "scheduled",
+    "isFeatured": true,
+    "capacity": 180,
+    "ticketsRemaining": 18,
+    "location": {
+      "latitude": 10.0,
+      "longitude": -84.116
+    },
+    "ticketTiers": [
+      {
+        "code": "general",
+        "name": "General",
+        "price": 20,
+        "currencyCode": "USD",
+        "perks": ["Standard entry"],
+        "remainingInventory": 8,
+        "isRecommended": false
+      },
+      {
+        "code": "premium",
+        "name": "Premium",
+        "price": 35,
+        "currencyCode": "USD",
+        "perks": ["Dedicated bar lane", "Two welcome cocktails"],
+        "remainingInventory": 6,
+        "isRecommended": true
+      },
+      {
+        "code": "vip-table",
+        "name": "VIP Table",
+        "price": 120,
+        "currencyCode": "USD",
+        "perks": ["Reserved table", "Bottle credit", "Host escort"],
+        "remainingInventory": 4,
+        "isRecommended": false
+      }
+    ]
+  },
+  {
+    "documentID": "after-dark-throwback-2026-03-26",
+    "title": "After Dark Throwback",
+    "subtitle": "Classic hits with polished production and easy planning",
+    "summary": "A more casual event card that still surfaces entry policy, vibe, and what is included with each pass.",
+    "heroSymbol": "music.note.house",
+    "badgeText": "Popular",
+    "hostName": "Midnight Social",
+    "venueName": "Barrio Club",
+    "neighborhood": "Barrio Escalante",
+    "address": "Calle 33, Barrio Escalante, San Jose, Costa Rica",
+    "startDate": "2026-03-26T20:00:00-06:00",
+    "endDate": "2026-03-27T01:30:00-06:00",
+    "doorsOpen": "2026-03-26T19:15:00-06:00",
+    "priceFrom": 10,
+    "currencyCode": "USD",
+    "description": "A nostalgia-driven night with practical guest information up front, including ID requirements, arrival guidance, and tier benefits.",
+    "agePolicy": "18+ only",
+    "dressCode": "Casual night-out attire",
+    "parkingInfo": "Street parking nearby. Rideshare drop-off recommended.",
+    "musicGenres": ["2000s hits", "Throwback pop", "Sing-along edits"],
+    "lineup": ["DJ Vale", "DJ Roca", "Midnight sing-along set"],
+    "amenities": ["Fast mobile check-in", "Merch pop-up", "Photo wall"],
+    "status": "scheduled",
+    "isFeatured": false,
+    "capacity": 260,
+    "ticketsRemaining": 102,
+    "location": {
+      "latitude": 9.928,
+      "longitude": -84.09
+    },
+    "ticketTiers": [
+      {
+        "code": "early-bird",
+        "name": "Early Bird",
+        "price": 10,
+        "currencyCode": "USD",
+        "perks": ["Discounted entry"],
+        "remainingInventory": 0,
+        "isRecommended": false
+      },
+      {
+        "code": "general",
+        "name": "General",
+        "price": 15,
+        "currencyCode": "USD",
+        "perks": ["Standard entry"],
+        "remainingInventory": 74,
+        "isRecommended": true
+      },
+      {
+        "code": "vip",
+        "name": "VIP",
+        "price": 40,
+        "currencyCode": "USD",
+        "perks": ["Lounge access", "Merch item"],
+        "remainingInventory": 28,
+        "isRecommended": false
+      }
+    ]
+  },
+  {
+    "documentID": "vinyl-social-2026-04-03",
+    "title": "Vinyl Social",
+    "subtitle": "Intimate selectors night with low-volume lounge energy",
+    "summary": "A smaller-format event that is useful for testing quieter venues, fewer tiers, and lower capacity.",
+    "heroSymbol": "recordingtape.circle",
+    "badgeText": "New",
+    "hostName": "Room Service Collective",
+    "venueName": "Casa Nube",
+    "neighborhood": "Los Yoses",
+    "address": "Casa Nube, Los Yoses, San Jose, Costa Rica",
+    "startDate": "2026-04-03T18:30:00-06:00",
+    "endDate": "2026-04-03T23:30:00-06:00",
+    "doorsOpen": "2026-04-03T18:00:00-06:00",
+    "priceFrom": 12,
+    "currencyCode": "USD",
+    "description": "A seated-first vinyl night with a different event profile from the larger club experiences.",
+    "agePolicy": "18+ only",
+    "dressCode": "Relaxed evening attire",
+    "parkingInfo": "Small private lot. Street parking available nearby.",
+    "musicGenres": ["Soul", "Disco", "Rare groove"],
+    "lineup": ["Nico T", "Vale Norte"],
+    "amenities": ["Table seating", "Specialty cocktails", "Listening-room sound"],
+    "status": "scheduled",
+    "isFeatured": false,
+    "capacity": 90,
+    "ticketsRemaining": 33,
+    "location": {
+      "latitude": 9.9345,
+      "longitude": -84.055
+    },
+    "ticketTiers": [
+      {
+        "code": "entry",
+        "name": "Entry",
+        "price": 12,
+        "currencyCode": "USD",
+        "perks": ["Standard entry"],
+        "remainingInventory": 21,
+        "isRecommended": true
+      },
+      {
+        "code": "table-for-two",
+        "name": "Table for Two",
+        "price": 32,
+        "currencyCode": "USD",
+        "perks": ["Reserved small table", "Priority seating"],
+        "remainingInventory": 12,
+        "isRecommended": false
+      }
+    ]
+  }
+]

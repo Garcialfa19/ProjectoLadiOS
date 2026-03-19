@@ -35,17 +35,14 @@ struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.subheadline.weight(.semibold))
+                .font(.footnote.weight(.semibold))
                 .foregroundStyle(isSelected ? Color.white : Color.primary)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
-                .background(
-                    Capsule()
-                        .fill(isSelected ? Color.accentColor : Color.clear)
-                )
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Capsule().fill(isSelected ? Color.accentColor : Color.clear))
                 .overlay {
                     Capsule()
-                        .strokeBorder(Color.white.opacity(isSelected ? 0.12 : 0.42), lineWidth: 1)
+                        .strokeBorder(isSelected ? Color.clear : Color.secondary.opacity(0.18), lineWidth: 1)
                 }
         }
         .buttonStyle(.plain)
@@ -59,15 +56,14 @@ struct SummaryMetricView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(value)
-                .font(.headline.weight(.semibold))
+                .font(.title3.weight(.semibold))
                 .foregroundStyle(.primary)
             Text(title)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .glassCard(cornerRadius: 20)
+        .padding(.vertical, 6)
     }
 }
 
@@ -77,26 +73,13 @@ struct FeaturedEventCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Label(event.badgeText, systemImage: "sparkles")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundStyle(theme.accent)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .liquidGlassCapsule()
-
-                Spacer()
-
-                Image(systemName: event.heroSymbol)
-                    .font(.title3)
-                    .foregroundStyle(theme.accent)
-                    .padding(12)
-                    .glassCard(cornerRadius: 18)
-            }
+            Label(event.badgeText, systemImage: "sparkles")
+                .font(.footnote.weight(.semibold))
+                .foregroundStyle(theme.accent)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(event.title)
-                    .font(.title2.weight(.semibold))
+                    .font(.title.weight(.semibold))
                     .foregroundStyle(.primary)
                 Text(event.subtitle)
                     .font(.subheadline)
@@ -111,8 +94,6 @@ struct FeaturedEventCard: View {
                 EventInfoPill(icon: "calendar", title: event.startsDayText)
                 EventInfoPill(icon: "clock", title: event.startTimeText)
             }
-
-            Divider()
 
             HStack {
                 VStack(alignment: .leading, spacing: 3) {
@@ -131,8 +112,8 @@ struct FeaturedEventCard: View {
                     .foregroundStyle(.tertiary)
             }
         }
-        .padding(22)
-        .glassCard(cornerRadius: 30)
+        .padding(20)
+        .glassCard(cornerRadius: 26)
     }
 }
 
@@ -142,16 +123,11 @@ struct EventRowCard: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(event.startDate.formatted(.dateTime.day()))
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(.primary)
-                Text(event.startDate.formatted(.dateTime.month(.abbreviated)))
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-            }
-            .frame(width: 44)
-            .padding(.vertical, 6)
+            Image(systemName: event.heroSymbol)
+                .font(.title3)
+                .foregroundStyle(theme.accent)
+                .frame(width: 42, height: 42)
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
@@ -188,8 +164,7 @@ struct EventRowCard: View {
                 }
             }
         }
-        .padding(18)
-        .glassCard(cornerRadius: 26)
+        .padding(.vertical, 10)
     }
 }
 
@@ -234,7 +209,7 @@ struct DetailSectionCard<Content: View>: View {
             content
         }
         .padding(20)
-        .glassCard(cornerRadius: 28)
+        .glassCard(cornerRadius: 24)
     }
 }
 
@@ -310,11 +285,11 @@ struct TicketTierRow: View {
             .padding(18)
             .background(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(isSelected ? theme.accent.opacity(0.14) : Color.clear)
+                    .fill(isSelected ? theme.accent.opacity(0.12) : Color.clear)
             )
             .overlay {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .strokeBorder(isSelected ? theme.accent.opacity(0.65) : Color.white.opacity(0.28), lineWidth: 1)
+                    .strokeBorder(isSelected ? theme.accent.opacity(0.40) : Color.secondary.opacity(0.15), lineWidth: 1)
             }
         }
         .buttonStyle(.plain)

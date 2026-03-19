@@ -1,0 +1,11 @@
+{
+  "name": "projectolad-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed:events": "node scripts/seed-firestore-events.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.4.0"
+  }
+}

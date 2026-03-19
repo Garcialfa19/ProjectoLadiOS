@@ -5,6 +5,10 @@ Primary collection
 - Collection: events
 - One document per live or scheduled event
 
+Additional collection
+- Collection: tickets
+- One document per purchased ticket
+
 Why the model was expanded
 - The old demo model was mostly display text.
 - A real booking app needs structured fields so the UI can sort, filter, format dates, show live inventory, and evolve without rewriting strings by hand.
@@ -124,3 +128,32 @@ Current app behavior
 - The app listens to the events collection in Firestore.
 - Documents are decoded directly into the Event model.
 - If Firestore is empty or unavailable, the app falls back to local sample events so the UI still works.
+
+Ticket document fields
+- userID: string
+- userEmail: string or null
+- eventID: string
+- eventTitle: string
+- venueName: string
+- eventStartDate: timestamp
+- tierCode: string
+- tierName: string
+- price: number
+- currencyCode: string
+- qrPayload: string
+- status: string
+  Allowed values:
+  - active
+  - used
+  - invalidated
+- purchasedAt: timestamp
+- usedAt: timestamp or null
+
+Ticket flow
+- When a user taps Continue on a selected tier, the app creates a ticket document.
+- The QR payload is unique per ticket and user.
+- The wallet reads tickets by userID and shows current status from Firestore.
+- A separate scanner system can mark a ticket as used by updating:
+  - status = used
+  - usedAt = current timestamp
+- Once status changes away from active, the app treats the QR as no longer valid.
