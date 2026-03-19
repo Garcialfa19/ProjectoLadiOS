@@ -4,6 +4,7 @@ struct TicketPass: Identifiable, Hashable {
     let id: String
     let userID: String
     let userEmail: String?
+    let walletID: String
     let eventID: String
     let eventTitle: String
     let venueName: String
@@ -12,10 +13,12 @@ struct TicketPass: Identifiable, Hashable {
     let tierName: String
     let price: Double
     let currencyCode: String
+    let qrToken: String
     let qrPayload: String
     let status: TicketPassStatus
     let purchasedAt: Date
     let usedAt: Date?
+    let scannedBy: String?
 
     var priceText: String {
         price.formatted(.currency(code: currencyCode))
@@ -31,6 +34,10 @@ struct TicketPass: Identifiable, Hashable {
 
     var statusTitle: String {
         status.displayTitle
+    }
+
+    var shortCode: String {
+        String(id.suffix(8)).uppercased()
     }
 }
 
