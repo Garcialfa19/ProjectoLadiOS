@@ -142,7 +142,7 @@ struct FirestoreTicketWalletRepository: TicketWalletRepositoryProtocol {
 private extension FirestoreTicketWalletRepository {
     func isPermissionDenied(_ error: Error) -> Bool {
         let nsError = error as NSError
-        return nsError.code == FirestoreErrorCode.permissionDenied.rawValue
+        return FirestoreErrorCode.Code(rawValue: nsError.code) == .permissionDenied
     }
 }
 
